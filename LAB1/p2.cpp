@@ -6,8 +6,7 @@
 void init() {
 	glClearColor(1.0, 1.0, 1.0, 1.0);
 	glColor3f(1.0, 0.0, 0.0);
-	glPointSize(3.0);
-	
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
@@ -23,7 +22,7 @@ void display() {
 	float y0 = 0.0;
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	glBegin(GL_POINTS);
+	glBegin(GL_LINE_LOOP);
 
 	for (int a = 0; a < 360; a += 10) {
 		float rad = a * PI / 180.0;
@@ -40,7 +39,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(500, 500);
-    glutCreateWindow("Problem 1: A round of points");
+    glutCreateWindow("Problem 2: Connected circle");
 
     init();
     glutDisplayFunc(display);
