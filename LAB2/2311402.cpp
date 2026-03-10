@@ -123,10 +123,74 @@ public:
 	void CreateCuboid(float fSizeX, float fSizeY, float fSizeZ);
 	void CreateCylinder(int nSegment, float fHeight, float fRadius);
 	void CreateSphere(int nSlice, int nStack, float radius);
+    void CreateTorus(int nSlice, int nStack, float R, float r);
+    void ClearMesh();
 };
 
+void Mesh::DrawWireframe() {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	for (int f = 0; f < numFaces; f++) {
+		glBegin(GL_POLYGON);
+		for (int v = 0; v < face[f].nVerts; v++) {
+			int		iv = face[f].vert[v].vertIndex;
+
+			glVertex3f(pt[iv].x, pt[iv].y, pt[iv].z);
+		}
+		glEnd();
+	}
+}
+
+void Mesh::DrawColor() {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	for (int f = 0; f < numFaces; f++) {
+		glBegin(GL_POLYGON);
+		for (int v = 0; v < face[f].nVerts; v++) {
+			int	iv = face[f].vert[v].vertIndex;
+			int	ic = face[f].vert[v].colorIndex;
+
+			ic = f % COLORNUM;
+
+			glColor3f(ColorArr[ic][0], ColorArr[ic][1], ColorArr[ic][2]);
+			glVertex3f(pt[iv].x, pt[iv].y, pt[iv].z);
+		}
+		glEnd();
+	}
+}
+void Mesh::DrawPoint() {
+	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	glPointSize(3);
+	glColor3f(0, 0, 0);
+	for (int f = 0; f < numVerts; f++) {
+		glBegin(GL_POINTS);
+		glVertex3f(pt[f].x, pt[f].y, pt[f].z);
+		glEnd();
+	}
+}
+
+// Clear mesh data
+void Mesh::ClearMesh() {
+    if (pt != nullptr) {
+        delete[] pt;
+        pt = nullptr;
+    }
+    if (face != nullptr) {
+        for (int i = 0; i < numFaces; i++) {
+            if (face[i].vert != nullptr) {
+                delete[] face[i].vert;
+                face[i].vert = nullptr;
+            }
+        }
+        delete[] face;
+        face = nullptr;
+    }
+    numVerts = 0;
+    numFaces = 0;
+}
+
+// 1. Create Cuboid
 void Mesh::CreateCuboid(float fSizeX, float fSizeY, float fSizeZ) {
-	int i;
+    ClearMesh();
+
 	numVerts = 8;
 	pt = new Point3[numVerts];
 
@@ -192,55 +256,16 @@ void Mesh::CreateCuboid(float fSizeX, float fSizeY, float fSizeZ) {
 	face[5].vert[3].vertIndex = 7;
 }
 
-void Mesh::DrawWireframe() {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	for (int f = 0; f < numFaces; f++) {
-		glBegin(GL_POLYGON);
-		for (int v = 0; v < face[f].nVerts; v++) {
-			int		iv = face[f].vert[v].vertIndex;
-
-			glVertex3f(pt[iv].x, pt[iv].y, pt[iv].z);
-		}
-		glEnd();
-	}
-}
-
-void Mesh::DrawColor() {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	for (int f = 0; f < numFaces; f++) {
-		glBegin(GL_POLYGON);
-		for (int v = 0; v < face[f].nVerts; v++) {
-			int	iv = face[f].vert[v].vertIndex;
-			int	ic = face[f].vert[v].colorIndex;
-
-			ic = f % COLORNUM;
-
-			glColor3f(ColorArr[ic][0], ColorArr[ic][1], ColorArr[ic][2]);
-			glVertex3f(pt[iv].x, pt[iv].y, pt[iv].z);
-		}
-		glEnd();
-	}
-}
-void Mesh::DrawPoint() {
-	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-	glPointSize(3);
-	glColor3f(0, 0, 0);
-	for (int f = 0; f < numVerts; f++) {
-		glBegin(GL_POINTS);
-		glVertex3f(pt[f].x, pt[f].y, pt[f].z);
-		glEnd();
-	}
-}
-
-// 2. CreateCylinder
+// 2. Create Cylinder
 void Mesh::CreateCylinder(int nSegment, float fHeight, float fRadius) {
+    ClearMesh();
+
 	numVerts = nSegment * 2 + 2;
 	pt = new Point3[numVerts];
-	int i, idx;
 	float fAngle = 2.0 * PI / nSegment;
 	float x, y, z;
 	pt[0].set(0, fHeight/2.0, 0); // set diem 0
-	for (i = 0; i < nSegment; ++i) {
+	for (int i = 0; i < nSegment; ++i) {
 		x = fRadius * cos(fAngle * i);
 		y = fHeight / 2.0;
 		z = fRadius * sin(fAngle * i);
@@ -253,8 +278,8 @@ void Mesh::CreateCylinder(int nSegment, float fHeight, float fRadius) {
 	numFaces= nSegment*3;
 	face = new Face[numFaces];
 
-	idx = 0;
-	for(i = 0; i<nSegment; i++) {
+	int idx = 0;
+	for(int i = 0; i<nSegment; i++) {
 		face[idx].nVerts = 3;
 		face[idx].vert = new VertexID[face[idx].nVerts];
 		face[idx].vert[0].vertIndex = 0;
@@ -266,7 +291,7 @@ void Mesh::CreateCylinder(int nSegment, float fHeight, float fRadius) {
 		idx++;
 	}
 
-	for(i = 0; i<nSegment; i++) {
+	for(int i = 0; i<nSegment; i++) {
 		face[idx].nVerts = 4;
 		face[idx].vert = new VertexID[face[idx].nVerts];
 		
@@ -281,7 +306,7 @@ void Mesh::CreateCylinder(int nSegment, float fHeight, float fRadius) {
 		idx++;
 	}
 
-	for(i = 0; i<nSegment; i++) {
+	for (int i = 0; i<nSegment; i++) {
 		face[idx].nVerts = 3;
 		face[idx].vert = new VertexID[face[idx].nVerts];
 		face[idx].vert[0].vertIndex = numVerts - 1;
@@ -292,10 +317,91 @@ void Mesh::CreateCylinder(int nSegment, float fHeight, float fRadius) {
 		face[idx].vert[1].vertIndex = i + 1 + nSegment;
 		idx++;
 	}
-
-
 }
 
+// 3. Create Sphere
+void Mesh::CreateSphere(int nSlice, int nStack, float radius) {
+    ClearMesh();
+
+    numVerts = (nStack + 1) * nSlice;
+    pt = new Point3[numVerts];
+
+    float stackAngle, sliceAngle;
+    int idx = 0;
+
+    for (int i = 0; i <= nStack; i++) {
+        stackAngle = PI / 2 - i * PI / nStack; 
+        float xy = radius * cos(stackAngle);
+        float z = radius * sin(stackAngle);
+
+        for (int j = 0; j < nSlice; j++) {
+            sliceAngle = j * 2 * PI / nSlice;
+
+            float x = xy * cos(sliceAngle);
+            float y = xy * sin(sliceAngle);
+
+            pt[idx++].set(x, y, z);
+        }
+    }
+
+    numFaces = nSlice * nStack;
+    face = new Face[numFaces];
+    idx = 0;
+
+    for (int i = 0; i < nStack; i++) {
+        for (int j = 0; j < nSlice; j++) {
+
+            int first = i * nSlice + j;
+            int second = first + nSlice;
+
+            int next = (j + 1) % nSlice;
+
+            face[idx].nVerts = 4;
+            face[idx].vert = new VertexID[4];
+
+            face[idx].vert[0].vertIndex = first;
+            face[idx].vert[1].vertIndex = i * nSlice + next;
+            face[idx].vert[2].vertIndex = (i + 1) * nSlice + next;
+            face[idx].vert[3].vertIndex = second;
+
+            idx++;
+        }
+    }
+}
+
+// 4. Create Torus
+void Mesh::CreateTorus(int nSlice, int nStack, float R, float r) {
+    ClearMesh();
+    
+    numVerts = (nStack + 1) * (nSlice + 1);
+    pt = new Point3[numVerts];
+    
+    for (int i = 0; i <= nStack; i++) {
+        float phi = (float)i * 2.0f * PI / nStack;
+        for (int j = 0; j <= nSlice; j++) {
+            float theta = (float)j * 2.0f * PI / nSlice;
+            float x = (R + r * cos(theta)) * cos(phi);
+            float y = (R + r * cos(theta)) * sin(phi);
+            float z = r * sin(theta);
+            pt[i * (nSlice + 1) + j].set(x, y, z);
+        }
+    }
+
+    numFaces = nStack * nSlice;
+    face = new Face[numFaces];
+    int f = 0;
+    for (int i = 0; i < nStack; i++) {
+        for (int j = 0; j < nSlice; j++) {
+            face[f].nVerts = 4;
+            face[f].vert = new VertexID[4];
+            face[f].vert[0].vertIndex = i * (nSlice + 1) + j;
+            face[f].vert[1].vertIndex = (i + 1) * (nSlice + 1) + j;
+            face[f].vert[2].vertIndex = (i + 1) * (nSlice + 1) + (j + 1);
+            face[f].vert[3].vertIndex = i * (nSlice + 1) + (j + 1);
+            f++;
+        }
+    }
+}
 
 //////////////////////////////////////////////////////////////////////
 int	screenWidth = 1000;
@@ -305,8 +411,11 @@ float angle = 0;
 
 int	nChoice = 0;
 
+// Create mesh objects
 Mesh cuboid;
 Mesh cylinder;
+Mesh sphere;
+Mesh torus;
 
 void drawAxis() {
 	glColor3f(0, 0, 1);
@@ -343,6 +452,10 @@ void myDisplay() {
 		cuboid.DrawWireframe();
 	else if (nChoice == 2)
 		cylinder.DrawWireframe();
+    else if (nChoice == 3)
+        sphere.DrawWireframe();
+    else if (nChoice == 4)
+        torus.DrawWireframe();
 
 
 	/////////////////////////////////////////////////////////////
@@ -356,6 +469,10 @@ void myDisplay() {
 		cuboid.DrawColor();
 	else if (nChoice == 2)
 		cylinder.DrawColor();
+    else if (nChoice == 3)
+        sphere.DrawColor();
+    else if (nChoice == 4)
+        torus.DrawColor();
 
 	glFlush();
 	glutSwapBuffers();
@@ -422,6 +539,8 @@ int main(int argc, _TCHAR* argv[]) {
 
 	cuboid.CreateCuboid(4.0f, 1.5f, 2.0f);
 	cylinder.CreateCylinder(100, 4.0f, 2.0f);
+    sphere.CreateSphere(40, 40, 2.0f);
+    torus.CreateTorus(10, 40, 3.0f, 1.0f);
 
 	glutMainLoop();
     	return 0;
