@@ -118,8 +118,8 @@ public:
 	void DrawPoint();
 
 
-	void CreateCube(float fSize);
-	void CreateTetrahedron(float fSize);
+	// void CreateCube(float fSize);
+	// void CreateTetrahedron(float fSize);
 	void CreateCuboid(float fSizeX, float fSizeY, float fSizeZ);
 	void CreateCylinder(int nSegment, float fHeight, float fRadius);
 	void CreateSphere(int nSlice, int nStack, float radius);
