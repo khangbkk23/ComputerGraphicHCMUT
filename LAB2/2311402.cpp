@@ -5,6 +5,11 @@
 #include <tchar.h>
 using namespace std;
 /////////////////////////////////////////////////////////////////////
+
+/*
+Student name: Bui Tran Duy Khang
+Student ID: 2311402
+*/
 #define PI			3.1415926
 #define	COLORNUM	14
 
@@ -118,8 +123,8 @@ public:
 	void DrawPoint();
 
 
-	// void CreateCube(float fSize);
-	// void CreateTetrahedron(float fSize);
+	void CreateCube(float fSize);
+	void CreateTetrahedron(float fSize);
 	void CreateCuboid(float fSizeX, float fSizeY, float fSizeZ);
 	void CreateCylinder(int nSegment, float fHeight, float fRadius);
 	void CreateSphere(int nSlice, int nStack, float radius);
@@ -190,7 +195,124 @@ void Mesh::ClearMesh() {
     numFaces = 0;
 }
 
-// 1. Create Cuboid
+// 0. Create Cube
+void Mesh::CreateCube(float	fSize) {
+	int i;
+
+	numVerts = 8;
+	pt = new Point3[numVerts];
+	pt[0].set(-fSize, fSize, fSize);
+	pt[1].set(fSize, fSize, fSize);
+	pt[2].set(fSize, fSize, -fSize);
+	pt[3].set(-fSize, fSize, -fSize);
+	pt[4].set(-fSize, -fSize, fSize);
+	pt[5].set(fSize, -fSize, fSize);
+	pt[6].set(fSize, -fSize, -fSize);
+	pt[7].set(-fSize, -fSize, -fSize);
+
+	numFaces = 6;
+	face = new Face[numFaces];
+
+	//Left face
+	face[0].nVerts = 4;
+	face[0].vert = new VertexID[face[0].nVerts];
+	face[0].vert[0].vertIndex = 1;
+	face[0].vert[1].vertIndex = 5;
+	face[0].vert[2].vertIndex = 6;
+	face[0].vert[3].vertIndex = 2;
+
+	//Right face
+	face[1].nVerts = 4;
+	face[1].vert = new VertexID[face[1].nVerts];
+	face[1].vert[0].vertIndex = 0;
+	face[1].vert[1].vertIndex = 3;
+	face[1].vert[2].vertIndex = 7;
+	face[1].vert[3].vertIndex = 4;
+
+	//top face
+	face[2].nVerts = 4;
+	face[2].vert = new VertexID[face[2].nVerts];
+	face[2].vert[0].vertIndex = 0;
+	face[2].vert[1].vertIndex = 1;
+	face[2].vert[2].vertIndex = 2;
+	face[2].vert[3].vertIndex = 3;
+
+
+	//bottom face
+	face[3].nVerts = 4;
+	face[3].vert = new VertexID[face[3].nVerts];
+	face[3].vert[0].vertIndex = 7;
+	face[3].vert[1].vertIndex = 6;
+	face[3].vert[2].vertIndex = 5;
+	face[3].vert[3].vertIndex = 4;
+
+	//near face
+	face[4].nVerts = 4;
+	face[4].vert = new VertexID[face[4].nVerts];
+	face[4].vert[0].vertIndex = 4;
+	face[4].vert[1].vertIndex = 5;
+	face[4].vert[2].vertIndex = 1;
+	face[4].vert[3].vertIndex = 0;
+
+	//Far face
+	face[5].nVerts = 4;
+	face[5].vert = new VertexID[face[5].nVerts];
+	face[5].vert[0].vertIndex = 3;
+	face[5].vert[1].vertIndex = 2;
+	face[5].vert[2].vertIndex = 6;
+	face[5].vert[3].vertIndex = 7;
+}
+
+// 1. Create Tetrahedron
+void Mesh::CreateTetrahedron(float fSize) {
+	int i;
+	numVerts=4;
+	pt = new Point3[numVerts];
+	pt[0].set(0, 0, 0);
+	pt[1].set(fSize, 0, 0);
+	pt[2].set(0, fSize, 0);
+	pt[3].set(0, 0, fSize);
+
+	numFaces= 4;
+	face = new Face[numFaces];
+
+	face[0].nVerts = 3;
+	face[0].vert = new VertexID[face[0].nVerts];
+	face[0].vert[0].vertIndex = 1;
+	face[0].vert[1].vertIndex = 2;
+	face[0].vert[2].vertIndex = 3;
+	for(i = 0; i<face[0].nVerts ; i++)
+		face[0].vert[i].colorIndex = 0;
+
+
+	face[1].nVerts = 3;
+	face[1].vert = new VertexID[face[1].nVerts];
+	face[1].vert[0].vertIndex = 0;
+	face[1].vert[1].vertIndex = 2;
+	face[1].vert[2].vertIndex = 1;
+	for(i = 0; i<face[1].nVerts ; i++)
+		face[1].vert[i].colorIndex = 1;
+
+
+	face[2].nVerts = 3;
+	face[2].vert = new VertexID[face[2].nVerts];
+	face[2].vert[0].vertIndex = 0;
+	face[2].vert[1].vertIndex = 3;
+	face[2].vert[2].vertIndex = 2;
+	for(i = 0; i<face[2].nVerts ; i++)
+		face[2].vert[i].colorIndex = 2;
+
+
+	face[3].nVerts = 3;
+	face[3].vert = new VertexID[face[3].nVerts];
+	face[3].vert[0].vertIndex = 1;
+	face[3].vert[1].vertIndex = 3;
+	face[3].vert[2].vertIndex = 0;
+	for(i = 0; i<face[3].nVerts ; i++)
+		face[3].vert[i].colorIndex = 3;
+}
+
+// 2. Create Cuboid
 void Mesh::CreateCuboid(float fSizeX, float fSizeY, float fSizeZ) {
     ClearMesh();
 
@@ -259,7 +381,7 @@ void Mesh::CreateCuboid(float fSizeX, float fSizeY, float fSizeZ) {
 	face[5].vert[3].vertIndex = 7;
 }
 
-// 2. Create Cylinder
+// 3. Create Cylinder
 void Mesh::CreateCylinder(int nSegment, float fHeight, float fRadius) {
     ClearMesh();
 
@@ -322,7 +444,7 @@ void Mesh::CreateCylinder(int nSegment, float fHeight, float fRadius) {
 	}
 }
 
-// 3. Create Sphere
+// 4. Create Sphere
 void Mesh::CreateSphere(int nSlice, int nStack, float radius) {
     ClearMesh();
 
@@ -372,7 +494,7 @@ void Mesh::CreateSphere(int nSlice, int nStack, float radius) {
     }
 }
 
-// 4. Create Torus
+// 5. Create Torus
 void Mesh::CreateTorus(int nSlice, int nStack, float R, float r) {
     ClearMesh();
     
@@ -406,7 +528,7 @@ void Mesh::CreateTorus(int nSlice, int nStack, float R, float r) {
     }
 }
 
-// 5. Create Eight-face Platonic
+// 6. Create Eight-face Platonic
 void Mesh::CreateEightFacePlatonic(float fSize) {
 	ClearMesh();
 	numVerts = 6;
@@ -457,7 +579,7 @@ void Mesh::CreateEightFacePlatonic(float fSize) {
     }
 }
 
-// 6. Create Twenty-face Platonic
+// 7. Create Twenty-face Platonic
 void Mesh::CreateTwentyFacePlatonic(float fSize) {
 	ClearMesh();
 	float tau = (sqrt(5.0f) - 1.0f) / 2.0f;
@@ -509,7 +631,69 @@ void Mesh::CreateTwentyFacePlatonic(float fSize) {
 		}
 	}
 }
-// 7. Create Twelve-face Platonic
+// 8. Create Twelve-face Platonic
+void Mesh::CreateTwelveFacePlatonic(float fSize) {
+
+    ClearMesh();
+    float tau = (sqrt(5.0f) - 1.0f) / 2.0f;
+
+    Point3 icoPt[12];
+    icoPt[0].set(0, fSize, fSize*tau);
+    icoPt[1].set(0, fSize, -fSize*tau);
+    icoPt[2].set(fSize, fSize*tau, 0);
+    icoPt[3].set(fSize, -fSize*tau, 0);
+    icoPt[4].set(0, -fSize, -fSize*tau);
+    icoPt[5].set(0, -fSize, fSize*tau);
+    icoPt[6].set(fSize*tau, 0, fSize);
+    icoPt[7].set(-fSize*tau, 0, fSize);
+    icoPt[8].set(fSize*tau, 0, -fSize);
+    icoPt[9].set(-fSize*tau, 0, -fSize);
+    icoPt[10].set(-fSize, fSize*tau, 0);
+    icoPt[11].set(-fSize, -fSize*tau, 0);
+
+    int icoFaceIndice[20][3] = {
+        {0,6,2}, {6,3,2}, {6,5,3}, {7,5,6}, {7,6,0},
+        {2,3,8}, {1,2,8}, {0,2,1}, {10,0,1}, {10,1,9},
+        {1,8,9}, {3,4,8}, {5,4,3}, {11,4,5}, {11,7,10},
+        {7,0,10}, {9,4,11}, {9,8,4}, {11,5,7}, {11,10,9}
+    }; // the same as the twenty-face platonic face indices
+
+    numVerts = 20;
+    pt = new Point3[numVerts];
+    for (int i = 0; i < 20; i++) {
+        float cx = (icoPt[icoFaceIndice[i][0]].x + icoPt[icoFaceIndice[i][1]].x + icoPt[icoFaceIndice[i][2]].x) / 3.0f;
+        float cy = (icoPt[icoFaceIndice[i][0]].y + icoPt[icoFaceIndice[i][1]].y + icoPt[icoFaceIndice[i][2]].y) / 3.0f;
+        float cz = (icoPt[icoFaceIndice[i][0]].z + icoPt[icoFaceIndice[i][1]].z + icoPt[icoFaceIndice[i][2]].z) / 3.0f;
+        pt[i].set(cx, cy, cz);
+    }
+
+    numFaces = 12;
+    face = new Face[numFaces];
+    
+    int dodecaFaceIndice[12][5] = {
+        {0, 7, 8, 15, 4},   
+        {7, 6, 10, 9, 8},   
+        {0, 1, 5, 6, 7},    
+        {1, 2, 12, 11, 5},  
+        {11, 17, 16, 13, 12}, 
+        {2, 12, 13, 18, 3}, 
+        {0, 4, 3, 2, 1},    
+        {4, 15, 14, 18, 3}, 
+        {5, 11, 17, 10, 6}, 
+        {9, 10, 17, 16, 19},
+        {8, 15, 14, 19, 9}, 
+        {13, 16, 19, 14, 18}
+    };
+
+    for (int i = 0; i < numFaces; ++i) {
+        face[i].nVerts = 5;
+        face[i].vert = new VertexID[5];
+        
+        for (int j = 0; j < 5; j++) {
+            face[i].vert[j].vertIndex = dodecaFaceIndice[i][j];
+        }
+    }
+}
 
 //////////////////////////////////////////////////////////////////////
 int	screenWidth = 1000;
@@ -520,6 +704,8 @@ float angle = 0;
 int	nChoice = 0;
 
 // Create mesh objects
+Mesh cube;
+Mesh tetrahedron;
 Mesh cuboid;
 Mesh cylinder;
 Mesh sphere;
@@ -559,23 +745,25 @@ void myDisplay() {
 	glRotatef(angle, 0, 1, 0);
 
 	glColor3f(0, 0, 0);
-	if (nChoice == 1)
-		cuboid.DrawWireframe();
-	else if (nChoice == 2)
-		cylinder.DrawWireframe();
-    else if (nChoice == 3)
-        sphere.DrawWireframe();
-    else if (nChoice == 4)
-        torus.DrawWireframe();
-	else if (nChoice == 5)
-		eightFacePlatonic.DrawWireframe();
-	else if (nChoice == 6)
-		twentyFacePlatonic.DrawWireframe();
-	else if (nChoice == 7)
-		twelveFacePlatonic.DrawWireframe();
-	else if (nChoice == 8)
-		cuboid.DrawPoint();
 
+	if (nChoice == 0)
+		cube.DrawWireframe();
+	else if (nChoice == 1)
+		tetrahedron.DrawWireframe();
+	else if (nChoice == 2)
+		cuboid.DrawWireframe();
+	else if (nChoice == 3)
+		cylinder.DrawWireframe();
+	else if (nChoice == 4)
+		sphere.DrawWireframe();
+	else if (nChoice == 5)
+		torus.DrawWireframe();
+	else if (nChoice == 6)
+		eightFacePlatonic.DrawWireframe();
+	else if (nChoice == 7)
+		twentyFacePlatonic.DrawWireframe();
+	else if (nChoice == 8)
+		twelveFacePlatonic.DrawWireframe();
 
 	/////////////////////////////////////////////////////////////
 	glViewport(screenWidth / 2, 0, screenWidth / 2, screenHeight);
@@ -584,22 +772,24 @@ void myDisplay() {
 	drawAxis();
 	glRotatef(angle, 0, 1, 0);
 
-	if (nChoice == 1)
-		cuboid.DrawColor();
+	if (nChoice == 0)
+		cube.DrawColor();
+	else if (nChoice == 1)
+		tetrahedron.DrawColor();
 	else if (nChoice == 2)
+		cuboid.DrawColor();
+	else if (nChoice == 3)
 		cylinder.DrawColor();
-    else if (nChoice == 3)
-        sphere.DrawColor();
-    else if (nChoice == 4)
-        torus.DrawColor();
+	else if (nChoice == 4)
+		sphere.DrawColor();
 	else if (nChoice == 5)
-		eightFacePlatonic.DrawColor();
+		torus.DrawColor();
 	else if (nChoice == 6)
-		twentyFacePlatonic.DrawColor();
+		eightFacePlatonic.DrawColor();
 	else if (nChoice == 7)
-		twelveFacePlatonic.DrawColor();
+		twentyFacePlatonic.DrawColor();
 	else if (nChoice == 8)
-		cuboid.DrawPoint();
+		twelveFacePlatonic.DrawPoint();
 
 	glFlush();
 	glutSwapBuffers();
@@ -613,6 +803,9 @@ void mySpecialFunc(int key, int x, int y) {
 }
 void myKeyboard(unsigned char key, int x, int y) {
 	switch (key) {
+	case '0':
+		nChoice = 0;
+		break;
 	case '1':
 		nChoice = 1;
 		break;
@@ -657,14 +850,15 @@ void myInit() {
 int main(int argc, _TCHAR* argv[]) {
 	cout << "Press -> or <- to rotate" << endl;
 
-	cout << "1. Cuboid" << endl;
-	cout << "2. Cylinder" << endl;
-	cout << "3. Sphere" << endl;
-	cout << "4. Torus" << endl;
-	cout << "5. Eight-Face Platonic" << endl;
-	cout << "6. Twenty-Face Platonic" << endl;
-	cout << "7. Twelve-Face Platonic" << endl;
-	cout << "8. Cuboid (Point mode)" << endl;
+	cout << "0. Cube" << endl;
+	cout << "1. Tetrahedron" << endl;
+	cout << "2. Cuboid" << endl;
+	cout << "3. Cylinder" << endl;
+	cout << "4. Sphere" << endl;
+	cout << "5. Torus" << endl;
+	cout << "6. Eight-face Platonic" << endl;
+	cout << "7. Twenty-face Platonic" << endl;
+	cout << "8. Twelve-face Platonic" << endl;
 
 	cout << endl<< "Input the choice: " << endl;
 	cin  >> nChoice;
@@ -680,12 +874,15 @@ int main(int argc, _TCHAR* argv[]) {
 	glutDisplayFunc(myDisplay);
 	glutSpecialFunc(mySpecialFunc);
 
+	cube.CreateCube(2.0f);
+	tetrahedron.CreateTetrahedron(2.0f);
 	cuboid.CreateCuboid(4.0f, 1.5f, 2.0f);
 	cylinder.CreateCylinder(100, 4.0f, 2.0f);
     sphere.CreateSphere(80, 80, 2.0f);
     torus.CreateTorus(10, 40, 3.0f, 1.0f);
-	eightFacePlatonic.CreateEightFacePlatonic(2.0f);
-	twentyFacePlatonic.CreateTwentyFacePlatonic(2.0f);
+	eightFacePlatonic.CreateEightFacePlatonic(4.0f);
+	twentyFacePlatonic.CreateTwentyFacePlatonic(4.0f);
+	twelveFacePlatonic.CreateTwelveFacePlatonic(4.0f);
 
 	glutMainLoop();
     	return 0;
