@@ -422,32 +422,39 @@ void Mesh::CreateEightFacePlatonic(float fSize) {
 	numFaces = 8;
 	face = new Face[numFaces];
 	
-	int faceIndices[8][3] = {
-		{2,5,4},
-		{2,4,6},
-		{6,3,2},
-		{2,3,5},
-		{4,5,1},
-		{4,1,6},
-		{6,1,3},
-		{5,3,1}
-	};
+	// int faceIndices[8][3] = {
+	// 	{2,5,4},
+	// 	{2,4,6},
+	// 	{6,3,2},
+	// 	{2,3,5},
+	// 	{4,5,1},
+	// 	{4,1,6},
+	// 	{6,1,3},
+	// 	{5,3,1}
+	// };
 
-	for (int i = 0; i < numFaces; ++i) {
-		face[i].nVerts = 3;
-		face[i].vert = new VertexID[3];
+	int ring[4] = {2,4,3,5};
 
-		float nx = 0.0f, ny = 0.0f, nz = 0.0f;
+    int f = 0;
 
-        for (int j = 0; j < 3; j++) {
-            int vIdx = faceIndices[i][j] - 1;
-            face[i].vert[j].vertIndex = vIdx;
-            
-            nx += pt[vIdx].x;
-            ny += pt[vIdx].y;
-            nz += pt[vIdx].z;
-        }
-	}
+    for(int i = 0; i < 4; i++) {
+        int a = ring[i];
+        int b = ring[(i+1)%4];
+
+        face[f].nVerts = 3;
+        face[f].vert = new VertexID[3];
+        face[f].vert[0].vertIndex = 0;
+        face[f].vert[1].vertIndex = a;
+        face[f].vert[2].vertIndex = b;
+        f++;
+
+        face[f].nVerts = 3;
+        face[f].vert = new VertexID[3];
+        face[f].vert[0].vertIndex = 1;
+        face[f].vert[1].vertIndex = b;
+        face[f].vert[2].vertIndex = a;
+        f++;
+    }
 }
 
 // 6. Create Twenty-face Platonic
