@@ -406,26 +406,32 @@ void Mesh::CreateTorus(int nSlice, int nStack, float R, float r) {
     }
 }
 
-// 5. Create Eight-Face Platonic
+// 5. Create Eight-face Platonic
 void Mesh::CreateEightFacePlatonic(float fSize) {
 	ClearMesh();
 	numVerts = 6;
 	pt = new Point3[numVerts];
 
-	pt[0].set(0, fSize, 0); // (+Y)
-	pt[1].set(-fSize, 0, 0); // (-X)
-	pt[2].set(0, 0, fSize); // (+Z)
-	pt[3].set(fSize, 0, 0); // (+X)
-	pt[4].set(0, 0, -fSize); // (-Z)
-	pt[5].set(0, -fSize, 0); // (-Y)
+	pt[0].set(0, fSize, 0);
+    pt[1].set(0, -fSize, 0);
+    pt[2].set(0, 0, -fSize);
+    pt[3].set(0, 0, fSize);
+    pt[4].set(fSize, 0, 0);
+    pt[5].set(-fSize, 0, 0);
 
 	numFaces = 8;
 	face = new Face[numFaces];
 	
 	int faceIndices[8][3] = {
-        {0, 1, 2}, {0, 2, 3}, {0, 3, 4}, {0, 4, 1},
-        {5, 2, 1}, {5, 3, 2}, {5, 4, 3}, {5, 1, 4}
-    };
+		{2,5,4},
+		{2,4,6},
+		{6,3,2},
+		{2,3,5},
+		{4,5,1},
+		{4,1,6},
+		{6,1,3},
+		{5,3,1}
+	};
 
 	for (int i = 0; i < numFaces; ++i) {
 		face[i].nVerts = 3;
@@ -434,7 +440,7 @@ void Mesh::CreateEightFacePlatonic(float fSize) {
 		float nx = 0.0f, ny = 0.0f, nz = 0.0f;
 
         for (int j = 0; j < 3; j++) {
-            int vIdx = faceIndices[i][j];
+            int vIdx = faceIndices[i][j] - 1;
             face[i].vert[j].vertIndex = vIdx;
             
             nx += pt[vIdx].x;
@@ -444,7 +450,7 @@ void Mesh::CreateEightFacePlatonic(float fSize) {
 	}
 }
 
-// 6. Create Twenty-Face Platonic
+// 6. Create Twenty-face Platonic
 void Mesh::CreateTwentyFacePlatonic(float fSize) {
 	ClearMesh();
 	float tau = (sqrt(5.0f) - 1.0f) / 2.0f;
@@ -496,6 +502,7 @@ void Mesh::CreateTwentyFacePlatonic(float fSize) {
 		}
 	}
 }
+// 7. Create Twelve-face Platonic
 
 //////////////////////////////////////////////////////////////////////
 int	screenWidth = 1000;
