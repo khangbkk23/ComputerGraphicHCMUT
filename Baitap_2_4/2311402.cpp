@@ -64,30 +64,31 @@ void drawHouse() {
 
 void myDisplay() {
     glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     drawGrid();
 
-    // Hình 1 (đỏ)
-    glPushMatrix();
-    glColor3f(1.0f, 0.0f, 0.0f);
-    drawHouse();
-    glPopMatrix();
+    // // Hình 1 (đỏ)
+    // glPushMatrix();
+    // glColor3f(1.0f, 0.0f, 0.0f);
+    // drawHouse();
+    // glPopMatrix();
 
-    // Hình 2 (xanh)
-    glPushMatrix();
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glTranslatef(4.0f, 3.0f, 0.0f);
-    drawHouse();
-    glPopMatrix();
+    // // Hình 2 (xanh)
+    // glPushMatrix();
+    // glColor3f(0.0f, 0.0f, 1.0f);
+    // glTranslatef(4.0f, 3.0f, 0.0f);
+    // drawHouse();
+    // glPopMatrix();
 
-    // Hình 3 (tím)
-    glPushMatrix();
-    glColor3f(1.0f ,0.0f ,1.0f);
-    glTranslatef(2.0f,-3.0f,0.0f);
-	glScalef(1.0f,1.5f,1.0f);
-    drawHouse();
-    glPopMatrix();
+    // // Hình 3 (tím)
+    // glPushMatrix();
+    // glColor3f(1.0f ,0.0f ,1.0f);
+    // glTranslatef(2.0f,-3.0f,0.0f);
+	// glScalef(1.0f,1.5f,1.0f);
+    // drawHouse();
+    // glPopMatrix();
 
 	// Hình 4 (cam)
 	glPushMatrix();
