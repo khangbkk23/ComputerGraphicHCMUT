@@ -60,6 +60,7 @@ void drawAxis(){
 	glRasterPos3f(0, 0, 1.5);
 	glutBitmapCharacter(font, 'Z');
 }
+
 void display(){
 	glClearColor(1.0,1.0,1.0,0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -69,11 +70,162 @@ void display(){
 	setLight();
 
 	setMaterial();
+	// // Hình 1
+	// glPushMatrix();
+	// glTranslatef(1.0f, 0.0f, 0.0f);
+	// glutSolidTeapot(0.25);
+	// glPopMatrix();
+
+	// // Hình 2
+	// glDisable(GL_LIGHTING); 
+    // glColor3f(0.0f, 0.0f, 1.0f);
+	// glPushMatrix();
+	// glTranslatef(0.25f, 0.5f, 0.45f);
+	// glScalef(0.5f, 1.0f, 0.9f);
+    // glutWireCube(1.0);
+    // glPopMatrix();
+    // glEnable(GL_LIGHTING);
+
+	// glPushMatrix();
+    // glTranslatef(0.5f, 1.0f, 0.9f); 
+    // glutSolidTeapot(0.25);
+    // glPopMatrix();
+
+	// // Hình 3
+	// glPushMatrix();
+    // glTranslatef(0.0f, 0.0f, 1.0f);
+	// glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+    // glutSolidTeapot(0.25); 
+    // glPopMatrix();
+
+	// // Hình 4
+    // glPushMatrix();
+    // glTranslatef(0.0f, 1.0f, 0.0f);
+    // glRotatef(60.0f, 0.0f, 1.0f, 0.0f);
+    // glScalef(0.5f, 0.5f, 0.5f);
+    // glutSolidTeapot(0.25);
+    // glPopMatrix();
+
+	// // Hình 5
+	// glPushMatrix();
+	// glTranslatef(1.0f, 0.0f, 0.0f);
+	// glutSolidTeapot(0.25);
+	// glPopMatrix();
+
+	// glPushMatrix();
+	// glTranslatef(-1.0f, 0.0f, 0.0f);
+	// glRotated(180.0f, 0.0f, 1.0f, 0.0f);
+	// glutSolidTeapot(0.25);
+	// glPopMatrix();
+
+	// glPushMatrix();
+	// glTranslated(0.0f, 0.0f, 1.0f);
+	// glRotated(-90.0f, 0.0f, 1.0f, 0.0f);
+	// glutSolidTeapot(0.25);
+	// glPopMatrix();
+
+	// glPushMatrix();
+	// glTranslated(0.0f, 0.0f, -1.0f);
+	// glRotated(90.0f, 0.0f, 1.0f, 0.0f);
+	// glutSolidTeapot(0.25);
+	// glPopMatrix();
+	
+	// Hình 6
+	// float cur_h = 0.0f;
+	// float cur_scale = 1.0f;
+    // const int n = 5;
+    // const float biggest_size = 0.25f;
+
+    // const float f_scale = 0.8f;
+    // const float distance = 0.3f;
+
+    // for (int i = 0; i < n; ++i) {
+    //     glPushMatrix();
+    //     glTranslatef(0.0f, cur_h, 0.0f);
+    //     glScalef(cur_scale, cur_scale, cur_scale);
+    //     glutSolidTeapot(biggest_size); 
+    //     glPopMatrix();
+    //     cur_h += distance;
+    //     cur_scale *= f_scale;
+    // }
+
+	// // Hình 7
+	// const int n = 5;
+    // const float distance = 0.3f;
+    // const float size = 0.2f;
+    // glColor3f(1.0f, 0.0f, 0.0f);
+
+    // for (int y = 0; y < n; ++y) {
+    //     for (int x = 0; x < n - y; ++x) {
+    //         for (int z = 0; z < n - x - y; ++z) {
+    //             if (y == 0 || z == 0) {
+    //                 glPushMatrix();
+    //                 glTranslatef(x * distance, y * distance, z * distance);
+    //                 glutSolidCube(size);        
+    //                 glPopMatrix();
+    //             }
+                
+    //         }
+    //     }
+    // }
+
+	// Hình 8
+	const int n = 4;
+	float size = 0.3f;
+	float step = 0.3f;
+	
 	glPushMatrix();
-	glTranslatef(1.0f, 0.0f, 0.0f);
-	glutSolidTeapot(0.25);
+	glScalef(1.2f, 1.2f, 1.2f);
+	glutSolidCube(0.4);
 	glPopMatrix();
 
+	float scale = 1.0f;
+	float pos = 0.0f;
+
+	for (int i = 0; i < n; i++) {
+		glPushMatrix();
+
+		glTranslatef(pos, 0.0f, 0.0f);
+		glRotatef(45.0f * i, 1, 0, 0);
+		glScalef(scale, scale, scale);
+
+		glutSolidCube(size);
+
+		glPopMatrix();
+
+		pos += step;
+		scale *= 0.8f;
+	}
+
+	for (int i = 0; i < n; i++) {
+		glPushMatrix();
+
+		glTranslatef(0.0f, pos, 0.0f);
+		glRotatef(45.0f * i, 0, 1, 0);
+		glScalef(scale, scale, scale);
+
+		glutSolidCube(size);
+
+		glPopMatrix();
+
+		pos += step;
+		scale *= 0.8f;
+	}
+
+	for (int i = 0; i < n; i++) {
+		glPushMatrix();
+
+		glTranslatef(0.0f, 0.0f, pos);
+		glRotatef(45.0f * i, 0, 0, 1);
+		glScalef(scale, scale, scale);
+
+		glutSolidCube(size);
+
+		glPopMatrix();
+
+		pos += step;
+		scale *= 0.8f;
+	}
 	glFlush();
 }
 
