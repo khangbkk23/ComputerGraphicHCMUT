@@ -1,5 +1,5 @@
 #include <windows.h>
-#include <GL/glut.h>
+#include <gl\glut.h>
 #include <tchar.h>
 #include <iostream>
 

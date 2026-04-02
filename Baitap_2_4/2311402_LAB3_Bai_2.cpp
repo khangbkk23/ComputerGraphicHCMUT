@@ -1,6 +1,6 @@
 #include <windows.h>
 #include <math.h>
-#include <GL/glut.h>
+#include <gl\glut.h>
 #include <tchar.h>
 
 const int screenWidth = 700;
