@@ -29,7 +29,7 @@ void setLight() {
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
-	//glEnable(GL_LIGHT2);
+	// glEnable(GL_LIGHT2);
 	glShadeModel(GL_SMOOTH);
 }
 
@@ -53,8 +53,20 @@ void setCamera() {
 	// gluLookAt(0.0, 0.0, -10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	// // Hinh 3
 	// gluLookAt(10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-	// Hinh 4
-	gluLookAt(0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+	// // Hinh 4
+	// gluLookAt(0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    // // Hinh 5
+	// gluLookAt(0.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+    // // Hinh 6
+	// gluLookAt(0.0, -10.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0);
+    // // Hinh 7
+	// gluLookAt(10.0, 10.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    // // Hình 8
+    // gluLookAt(-10.0, 10.0, -10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    // // Hình 9
+    // gluLookAt(10.0, -5.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    // Hình 10
+    gluLookAt(10.0, -5.0, 10.0, 0.0, -0.5, 0.0, 0.0, 1.0, 0.0);
 }
 
 void drawAxis() {
